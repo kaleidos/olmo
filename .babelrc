@@ -1,0 +1,13 @@
+{
+  "presets": ["es2015", "stage-2", "react"],
+  "plugins": [
+    ["typecheck", {
+    "disable": {
+      "production": true
+    }
+    }],
+    ["babel-plugin-transform-react-jsx", {
+      "pragma": "html"
+    }]
+  ]
+}
