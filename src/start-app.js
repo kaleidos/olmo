@@ -23,7 +23,7 @@ const render = snabbdom.init([
 // runApp : (App model action, HtmlElement) -> Task Never ()
 export function runApp(app, rootElement) {
   return Rx.Observable.merge(
-    app.html.scan(render),
+    app.html.scan(render, rootElement),
     app.effects
   ).subscribe();
 }
@@ -89,8 +89,13 @@ export function AppSimple(config) {
   const inbox = Signal.Mailbox(Maybe.Nothing());
   const address = Signal.forwardTo(inbox.address, Maybe.Just);
 
-  const inputs = inbox.signal.filter(Maybe.isJust);
-  const model = inputs.scan(R.flip(config.update), config.init);
+  const inputs = inbox.signal;
+
+  function update(maybeAction, model) {
+    return maybeAction.chain(action => config.update(action, model));
+  }
+
+  const model = inputs.scan(R.flip(update), config.init);
   const html = model.map(model => config.view({model, address}));
 
   return {

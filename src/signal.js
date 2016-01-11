@@ -32,7 +32,7 @@ export function send(address, message) {
   }
 }
 
-export default = {
+export default {
   Mailbox,
   forwardTo,
   send
