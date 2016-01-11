@@ -1,19 +1,24 @@
 {
-  "name": "@olmo/core",
+  "name": "Olmo",
   "version": "1.0.0",
-  "description": "Elm core ported to JS",
+  "description": "Elm ported to JS",
   "main": "lib/olmo.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kaleidos/olmo-core.git"
+    "url": "git+https://github.com/kaleidos/olmo.git"
   },
   "author": "Kaleidos Team",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kaleidos/olmo-core/issues"
+    "url": "https://github.com/kaleidos/olmo/issues"
   },
-  "homepage": "https://github.com/kaleidos/olmo-core#readme"
+  "homepage": "https://github.com/kaleidos/olmo#readme",
+  "dependencies": {
+    "data.maybe": "^1.2.1",
+    "ramda": "^0.19.1",
+    "rx": "^4.0.7"
+  }
 }
