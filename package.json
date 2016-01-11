@@ -1,0 +1,19 @@
+{
+  "name": "@olmo/core",
+  "version": "1.0.0",
+  "description": "Elm core ported to JS",
+  "main": "lib/olmo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaleidos/olmo-core.git"
+  },
+  "author": "Kaleidos Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kaleidos/olmo-core/issues"
+  },
+  "homepage": "https://github.com/kaleidos/olmo-core#readme"
+}
