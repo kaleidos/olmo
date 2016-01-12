@@ -92,7 +92,10 @@ export function AppSimple(config) {
   const inputs = inbox.signal;
 
   function update(maybeAction, model) {
-    return maybeAction.chain(action => config.update(action, model));
+    return maybeAction
+      .map(action => config.update(action, model))
+      .getOrElse(model)
+    ;
   }
 
   const model = inputs.scan(R.flip(update), config.init);
