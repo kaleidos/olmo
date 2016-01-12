@@ -22,7 +22,8 @@
     "ramda": "^0.19.1",
     "rx": "^4.0.7",
     "snabbdom": "^0.2.8",
-    "snabbdom-jsx": "^0.3.0"
+    "snabbdom-jsx": "^0.3.0",
+    "union-type": "^0.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.4.0",
