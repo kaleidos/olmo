@@ -5,6 +5,7 @@
   "main": "lib/olmo.js",
   "scripts": {
     "ex1": "webpack-dev-server --inline --entry ./examples/01-counter/index.js",
+    "ex2": "webpack-dev-server --inline --entry ./examples/02-counter-pair/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
