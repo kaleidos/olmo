@@ -21,6 +21,7 @@
   "homepage": "https://github.com/kaleidos/olmo#readme",
   "dependencies": {
     "data.maybe": "^1.2.1",
+    "history": "^1.17.0",
     "ramda": "^0.19.1",
     "rx": "^4.0.7",
     "snabbdom": "^0.2.8",
