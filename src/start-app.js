@@ -19,23 +19,23 @@ const render = snabbdom.init([
   eventsModule
 ]);
 
-
-// runApp : (App model action, HtmlElement) -> Task Never ()
-export function runApp(app, rootElement) {
-  return Rx.Observable.merge(
-    app.html.scan(render, rootElement),
-    app.effects
-  ).subscribe();
-}
-
 // type Conf model action = { init : (model, Effect action)
 //                          , update : (action, model) -> (model, Effect action)
 //                          , view : {Address action, model} -> VirtualDOM
 //                          , inputs: [Signal action] }
 
 // type App model action = { model : model
-//                         , effects : Signal action
+//                         , tasks : Signal (Task Never ())
 //                         , html : Signal VirtualDOM }
+
+// runApp : (App model action, HtmlElement) -> Task Never ()
+export function runApp(app, rootElement) {
+  return Rx.Observable.merge(
+    app.html.scan(render, rootElement),
+    app.model,
+    app.tasks
+  ).subscribe();
+}
 
 // App : Conf model action -> App model action
 export function App(config) {
@@ -56,27 +56,28 @@ export function App(config) {
     return R.reduce(updateStep, [model, Effects.none()], actions);
   }
 
-  const inputs = Rx.Observable.merge(...R.prepend(
-    inbox.signal,
-    R.map(singletonMap, config.inputs)
-  ));
-  const effectsAndModel = inputs.scan(R.flip(update), config.init);
+  const actions = R.prepend(inbox.signal, R.map(singletonMap, config.inputs));
+  const inputs = Rx.Observable.merge(...actions);
+  const effectsAndModel = inputs.scan(R.flip(update), config.init)
+          .shareReplay();
 
   const model = effectsAndModel.map(R.nth(0));
 
-  const html = model
+  const html = effectsAndModel.map(R.nth(0))
           .map(model => config.view({model, address}))
-          .debounce(1, Rx.Scheduler.RequestAnimationFrame);
+          .debounce(1, Rx.Scheduler.RequestAnimationFrame)
+  ;
 
-  const effects = effectsAndModel
+  const tasks = effectsAndModel
           .map(R.nth(1))
           .mergeAll()
           .map(action => Signal.send(address, action))
+  ;
 
   return {
     model,
     html,
-    effects
+    tasks
   };
 }
 
