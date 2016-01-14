@@ -82,4 +82,4 @@ export default {
   go,
   next,
   previous
-}
+};
