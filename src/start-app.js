@@ -2,22 +2,9 @@ import Rx from 'rx';
 import R from 'ramda';
 import Maybe from 'data.maybe';
 
-import snabbdom from 'snabbdom';
-import classModule from 'snabbdom/modules/class';
-import propsModule from 'snabbdom/modules/props';
-import styleModule from 'snabbdom/modules/style';
-import eventsModule from 'snabbdom/modules/eventlisteners';
-
 import Signal from './signal';
 import Effects from './effects';
 
-
-const render = snabbdom.init([
-  classModule,
-  propsModule,
-  styleModule,
-  eventsModule
-]);
 
 // type Conf model action = { init : (model, Effect action)
 //                          , update : (action, model) -> (model, Effect action)
@@ -28,10 +15,10 @@ const render = snabbdom.init([
 //                         , tasks : Signal (Task Never ())
 //                         , html : Signal VirtualDOM }
 
-// runApp : (App model action, HtmlElement) -> Task Never ()
-export function runApp(app, rootElement) {
+// runApp : App model action -> RxSubscription
+export function runApp(app) {
   return Rx.Observable.merge(
-    app.html.scan(render, rootElement),
+    app.html,
     app.model,
     app.tasks
   ).subscribe();
@@ -56,23 +43,20 @@ export function App(config) {
     return R.reduce(updateStep, [model, Effects.none()], actions);
   }
 
-  const actions = R.prepend(inbox.signal, R.map(singletonMap, config.inputs));
-  const inputs = Rx.Observable.merge(...actions);
-  const effectsAndModel = inputs.scan(R.flip(update), config.init)
+  const listInputs = R.prepend(inbox.signal, R.map(singletonMap, config.inputs));
+  const inputs = Rx.Observable.merge(...listInputs);
+  const effectsAndModel = inputs
+          .scan(R.flip(update), config.init)
           .shareReplay();
 
   const model = effectsAndModel.map(R.nth(0));
 
-  const html = effectsAndModel.map(R.nth(0))
-          .map(model => config.view({model, address}))
+  const html = effectsAndModel
+          .map(([model]) => config.view({model, address}))
           .debounce(1, Rx.Scheduler.RequestAnimationFrame)
   ;
 
-  const tasks = effectsAndModel
-          .map(R.nth(1))
-          .mergeAll()
-          .map(action => Signal.send(address, action))
-  ;
+  const tasks = effectsAndModel.flatMap(([_, effect]) => Effects.toTask(address, effect));
 
   return {
     model,

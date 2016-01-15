@@ -1,5 +1,6 @@
 import Rx from 'rx';
 
+export const merge = Rx.Observable.merge;
 
 // type Mailbox a = { signal : Signal a, address : a -> Task Never ()}
 // Mailbox: a -> Mailbox a
@@ -35,5 +36,6 @@ export function send(address, message) {
 export default {
   Mailbox,
   forwardTo,
-  send
+  send,
+  merge
 };
