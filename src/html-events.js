@@ -75,29 +75,29 @@ export function messageOn(options) {
   };
 }
 
-// onValue : (Address a, String -> a) -> Task Never ()
-export const onValue = decodeOn(targetValue, defaultOptions);
+// value : (Address a, String -> a) -> Task Never ()
+export const value = decodeOn(targetValue, defaultOptions);
 
-// onCheck : (Address a, Bool -> a) -> Task Never ()
-export const onCheck = decodeOn(targetChecked, defaultOptions);
+// check : (Address a, Bool -> a) -> Task Never ()
+export const check = decodeOn(targetChecked, defaultOptions);
 
-// onSubmit : (Address a, a) -> Task Never ()
-export const onSubmit = messageOn(preventDefaultOptions);
+// submit : (Address a, a) -> Task Never ()
+export const submit = messageOn(preventDefaultOptions);
 
-// onEvent : (Address a, a) -> Task Never ()
-export const onEvent = messageOn(defaultOptions);
+// message : (Address a, a) -> Task Never ()
+export const message = messageOn(defaultOptions);
 
 // onLink : (Address a, String -> a) -> Task Never ()
-export const onLink = decodeOn(targetHref, preventDefaultOptions);
+export const link = decodeOn(targetHref, preventDefaultOptions);
 
 export default {
   on,
   messageOn,
   decodeOn,
 
-  onValue,
-  onCheck,
-  onSubmit,
-  onEvent,
-  onLink
+  value,
+  check,
+  submit,
+  message,
+  link
 };
