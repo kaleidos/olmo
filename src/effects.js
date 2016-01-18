@@ -29,7 +29,13 @@ export function toTask(address, effect) {
   });
 }
 
+export function merge(effects) {
+  return Rx.Observable.merge(...effects);
+}
+
 export default {
   none,
-  fromTask
+  fromTask,
+  toTask,
+  merge
 };
