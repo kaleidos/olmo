@@ -34,6 +34,8 @@ export function App(config) {
 
   function updateStep([oldModel, accumulatedEffects], action) {
     const [newModel, additionalEffects] = config.update(action, oldModel);
+    if (R.isNil(newModel)) throw new Error(`Invalid model '${newModel}' returned by update function handling action '${action.type}'`);
+    if (R.isNil(additionalEffects)) throw new Error(`Invalid effect '${additionalEffects}' returned by update function handling action '${action.type}'`);
     const newEffects = accumulatedEffects.merge(additionalEffects);
 
     return [newModel, newEffects];
@@ -52,7 +54,7 @@ export function App(config) {
   const model = effectsAndModel.map(R.nth(0));
 
   const html = effectsAndModel
-          .map(([model]) => config.view({model, address}))
+          .map(([model]) => config.view(address, model))
           .debounce(1, Rx.Scheduler.RequestAnimationFrame)
   ;
 
@@ -84,7 +86,7 @@ export function AppSimple(config) {
   }
 
   const model = inputs.scan(R.flip(update), config.init);
-  const html = model.map(model => config.view({model, address}));
+  const html = model.map(model => config.view(address, model));
 
   return {
     model,

@@ -26,11 +26,7 @@ export function forwardTo(address, tagMessage) {
 
 // send : (Address a, a) -> a -> Task Never ()
 export function send(address, message) {
-  try {
-    address(message);
-  } catch(error) {
-    throw new Error(`A non-failing task has failed: ${error}`);
-  }
+  address(message);
 }
 
 export default {
