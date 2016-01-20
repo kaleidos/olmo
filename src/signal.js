@@ -17,15 +17,21 @@ export function Mailbox(initialValue) {
   };
 }
 
-// forwardTo : (Address a, a -> a) -> a -> Task Never ()
+// send : (Address a, a) -> a -> Task Never ()
+export function send(address, message) {
+  return Rx.Observable.create(observer => {
+    address(message);
+    observer.onCompleted();
+  });
+}
+
 export function forwardTo(address, tagMessage) {
   return function forwardedAddress(message) {
-    return send(address, tagMessage(message));
+    return sendSync(address, tagMessage(message));
   };
 }
 
-// send : (Address a, a) -> a -> Task Never ()
-export function send(address, message) {
+export function sendSync(address, message) {
   address(message);
 }
 
@@ -33,5 +39,6 @@ export default {
   Mailbox,
   forwardTo,
   send,
+  sendSync,
   merge
 };

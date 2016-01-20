@@ -59,7 +59,7 @@ export function decodeOn(decoder, options) {
     return on(
       options,
       decoder,
-      arg => Signal.send(address, handler(arg))
+      arg => Signal.sendSync(address, handler(arg))
     );
   };
 }
@@ -70,7 +70,7 @@ export function messageOn(options) {
     return on(
       options,
       R.identity,
-      ignoredArg => Signal.send(address, message)
+      ignoredArg => Signal.sendSync(address, message)
     );
   };
 }

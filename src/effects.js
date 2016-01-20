@@ -16,26 +16,21 @@ export function fromTask(task, successCallback, failureCallback) {
 }
 
 export function toTask(address, effect) {
-  return Rx.Observable.create(function toTaskObservable(observer) {
-    effect.subscribe(
-      action => {
-        Signal.send(address, action);
-        observer.onCompleted();
-      },
-      error => {
-        observer.onError(error);
-      }
-    );
-  });
+  return effect.flatMap(action => Signal.send(address, action));
 }
 
 export function merge(effects) {
   return Rx.Observable.merge(...effects);
 }
 
+export function sendAsEffect(address, msg, effMsg) {
+  return Signal.send(address, msg).map(() => effMsg);
+}
+
 export default {
   none,
   fromTask,
   toTask,
-  merge
+  merge,
+  sendAsEffect,
 };
