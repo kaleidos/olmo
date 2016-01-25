@@ -5,8 +5,7 @@
   "main": "lib/olmo.js",
   "scripts": {
     "ex1": "webpack-dev-server --inline --entry ./examples/01-counter/index.js",
-    "ex2": "webpack-dev-server --inline --entry ./examples/02-counter-pair/index.js",
-    "ex3": "webpack-dev-server --inline --entry ./examples/03-list-of-counters/index.js",
+    "ex1:build": "webpack ./examples/01-counter/index.js && cp bundle.js ./examples/01-counter",
     "test": "babel-tape-runner test/**/*.js | faucet",
     "test:watch": "watch 'npm test' src/ test/ -d"
   },
@@ -39,7 +38,7 @@
     "style-loader": "^0.13.0",
     "tape": "^4.4.0",
     "watch": "^0.17.1",
-    "webpack": "^1.12.10",
+    "webpack": "^1.12.12",
     "webpack-dev-server": "^1.14.1"
   }
 }
