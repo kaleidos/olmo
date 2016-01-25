@@ -2,8 +2,6 @@ import Rx from 'rx';
 import createHistory from 'history/lib/createBrowserHistory';
 import useQueries from 'history/lib/useQueries';
 
-import { Mailbox } from './signal';
-
 // type Action = PUSH | REPLACE | POP
 
 // type Location = { pathname : String
