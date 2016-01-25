@@ -40,6 +40,6 @@
     "tape": "^4.4.0",
     "watch": "^0.17.1",
     "webpack": "^1.12.10",
-    "webpack-dev-server": "^1.14.0"
+    "webpack-dev-server": "^1.14.1"
   }
 }

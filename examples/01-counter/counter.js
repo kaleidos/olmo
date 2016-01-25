@@ -1,6 +1,8 @@
-import { html } from 'olmo/jsx';
-import { onEvent } from 'olmo/html-events';
-import Type from 'olmo/actions';
+import Events from 'olmo/html-events';
+import ActionType from 'olmo/actions';
+
+import { html } from 'snabbdom-jsx';
+
 
 // model
 export function init(initialValue=0) {
@@ -8,27 +10,31 @@ export function init(initialValue=0) {
 }
 
 // actions
-export const Action = Type({
+export const Action = ActionType({
   Increment: [],
   Decrement: []
 });
 
 // update
-export function update(action, model) {
-  return Action.case({
-    Increment: () => model + 1,
-    Decrement: () => model - 1
-  }, action);
-}
+export const update = Action.case('Counter', {
 
-export function view({address, model}) {
+  Increment: (action, model) => model + 1,
+
+  Decrement: (action, model) => model - 1,
+
+});
+
+
+export function view(address, model) {
   return (
     <div>
       <p>{model}</p>
       <p>
-        <button on-click={onEvent(address, Action.Decrement)}>Decrement</button>
-        <button on-click={onEvent(address, Action.Increment)}>Increment</button>
+        <button on-click={Events.message(address, Action.Decrement())}>Decrement</button>
+        <button on-click={Events.message(address, Action.Increment())}>Increment</button>
       </p>
     </div>
   );
 }
+
+export default {init, update, view};
