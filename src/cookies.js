@@ -14,7 +14,6 @@ export function set(name, value, options) {
 }
 
 export function get(name) {
-  console.log("set cookie",name);
   return Rx.Observable.create(function getCookieObservable(observer) {
     try {
       const cookie = Cookies.get(name);
