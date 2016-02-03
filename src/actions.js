@@ -9,6 +9,9 @@ export function ActionType(spec) {
 
 function buildActionConstructor([actionName, actionFields]) {
   function actionGuard(name, handlers) {
+    if (typeof handlers === 'undefined') {
+      throw new Error(`'Action.case' second param 'handlers' cannot be undefined.`)
+    }
     return function update(action, model) {
       let handler;
       if (R.hasIn(action.type, handlers)) {
