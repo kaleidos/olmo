@@ -10,6 +10,8 @@
     "ex2:build": "webpack ./examples/02-counter-pair/index.js && cp bundle.js index.html ./examples/02-counter-pair",
     "ex3": "webpack-dev-server --inline --entry ./examples/03-list-of-counters/index.js",
     "ex3:build": "webpack ./examples/03-list-of-counters/index.js && cp bundle.js index.html ./examples/03-list-of-counters",
+    "ex4": "webpack-dev-server --inline --entry ./examples/04-list-of-counters/index.js",
+    "ex4:build": "webpack ./examples/04-list-of-counters/index.js && cp bundle.js index.html ./examples/04-list-of-counters",
     "test": "babel-tape-runner test/**/*.js | faucet",
     "test:watch": "watch 'npm test' src/ test/ -d"
   },
