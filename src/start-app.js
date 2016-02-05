@@ -4,6 +4,7 @@ import Maybe from 'data.maybe';
 
 import Signal from './signal';
 import Effects from './effects';
+import Task from './task';
 
 
 // type Conf model action = { init : (model, Effect action)
@@ -85,13 +86,14 @@ export function AppSimple(config) {
     ;
   }
 
-  const model = inputs.scan(R.flip(update), config.init);
-  const html = model.map(model => config.view(address, model));
+  const model = inputs.scan(R.flip(update), config.init).shareReplay();
+  const html = model.map(model => config.view(address, model)).shareReplay();
+  const tasks = Task.empty();
 
   return {
     model,
     html,
-    effects: Effects.none()
+    tasks
   };
 }
 
