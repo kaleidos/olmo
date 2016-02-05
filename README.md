@@ -14,7 +14,8 @@ This is an attempt to port the core ideas of *The Elm Architecture* to a JavaScr
 Run any example with `npm run ex<number of the example>`, eg: `npm run ex1`
 
 1. [Simple counter](https://github.com/kaleidos/olmo/blob/master/examples/01-counter) / [demo](http://kaleidos.github.io/olmo/examples/01-counter/)
-1. [Counter pair](https://github.com/kaleidos/olmo/blob/master/examples/02-counter-pair) / [demo](http://kaleidos.github.io/olmo/examples/02-counter-pair/)
+2. [Counter pair](https://github.com/kaleidos/olmo/blob/master/examples/02-counter-pair) / [demo](http://kaleidos.github.io/olmo/examples/02-counter-pair/)
+3. [List of counters](https://github.com/kaleidos/olmo/blob/master/examples/03-list-of-counters) / [demo](http://kaleidos.github.io/olmo/examples/03-list-of-counters/)
 
 ## Testing ##
 

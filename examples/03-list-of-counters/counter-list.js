@@ -1,96 +1,93 @@
-import { html } from 'olmo/jsx';
-import { onEvent } from 'olmo/html-events';
+import Events from 'olmo/html-events';
 import { forwardTo } from 'olmo/signal';
-import Type from 'olmo/actions';
+import ActionType from 'olmo/actions';
+
+import { html } from 'snabbdom-jsx';
 
 import Counter from './counter';
 
-// Take a look at Enhanced Object Literals if you see object syntax confusing
-// https://babeljs.io/docs/learn-es2015/#enhanced-object-literals
 
 // model
 export function init(countersWithID=[], nextID=1) {
   return { countersWithID, nextID };
 }
 
+function nextID(prevID) {
+  return prevID + 1;
+}
+
+
 // actions
-export const Action = Type({
+export const Action = ActionType({
   Add: [],
-  Modify: [Number, Counter.Action], // Number because counter id is a number
+  Modify: ['id', 'counterAction'],
   RemoveFirst: [],
   Reset: []
 });
 
+
 // update
-export function update(action, model) {
-  return Action.case({
+export const update = Action.case('CounterList', {
 
-    Add: () => {
-      const newCounter = Counter.init();
-      const newID = model.nextID;
-      const newCounterWithID = {id: newID, counter: newCounter};
-      const newNextID = model.nextID + 1;
+  Add: (action, model) => {
+    const counter = Counter.init();
+    const id = model.nextID;
+    const counterWithID = {id, counter};
 
-      return init(
-        model.countersWithID.concat(newCounterWithID),
-        newNextID
-      );
-    },
+    return init(
+      model.countersWithID.concat(counterWithID),
+      nextID(id)
+    );
+  },
 
-    Modify: (counterID, counterAction) => {
-      const newCounterWithID = model.countersWithID.map(counterWithID => {
+  Modify: (action, model) => {
+    return init(
+      model.countersWithID.map(counterWithID => {
         const {id, counter} = counterWithID;
-        const newCounter = counter;
-        if (counterID === id)
+        if (id === action.id) {
           return {
             id,
-            counter: Counter.update(counterAction, counter)
+            counter: Counter.update(action.counterAction, counter)
           };
-        else
-          return {
-            id,
-            counter
-          };
-      });
-      const nextID = model.nextID;
+        } else {
+          return counterWithID
+        }
+      }),
+      model.nextID
+    );
+  },
 
-      return init(
-        newCounterWithID,
-        nextID
-      );
-    },
+  RemoveFirst: (action, model) => {
+    return init(
+      model.countersWithID.slice(1),
+      model.nextID
+    );
+  }
 
-    RemoveFirst: () => {
-      const newCountersWithID = model.countersWithID.slice(1);
-      const nextID = model.nextID;
+});
 
-      return init(
-        newCountersWithID,
-        nextID
-      );
-    }
-  }, action);
-}
 
-export function view({address, model}) {
+export function view(address, model) {
   const listOfCounters = model.countersWithID.map(counterWithID => {
     const {id, counter} = counterWithID;
     const counterAddress = forwardTo(address, Action.Modify(id));
 
     return (
       <li>
-        <Counter address={counterAddress} model={counter}/>
+        {Counter.view(counterAddress, counter)}
       </li>
     )
   });
 
   return (
     <div>
-      <button on-click={onEvent(address, Action.Add)}>Add Counter</button>
-      <button on-click={onEvent(address, Action.RemoveFirst)}>Remove First</button>
+      <button on-click={Events.message(address, Action.Add())}>Add Counter</button>
+      <button on-click={Events.message(address, Action.RemoveFirst())}>Remove First</button>
       <ul>
         {listOfCounters}
       </ul>
     </div>
   );
 }
+
+export default {init, view, update};
