@@ -6,6 +6,8 @@
   "scripts": {
     "ex1": "webpack-dev-server --inline --entry ./examples/01-counter/index.js",
     "ex1:build": "webpack ./examples/01-counter/index.js && cp bundle.js ./examples/01-counter",
+    "ex2": "webpack-dev-server --inline --entry ./examples/02-counter-pair/index.js",
+    "ex2:build": "webpack ./examples/02-counter-pair/index.js && cp bundle.js ./examples/02-counter-pair",
     "test": "babel-tape-runner test/**/*.js | faucet",
     "test:watch": "watch 'npm test' src/ test/ -d"
   },
@@ -36,6 +38,8 @@
     "babel-tape-runner": "^2.0.0",
     "css-loader": "^0.23.1",
     "faucet": "0.0.1",
+    "snabbdom": "^0.3.1",
+    "snabbdom-jsx": "^0.3.0",
     "style-loader": "^0.13.0",
     "tape": "^4.4.0",
     "watch": "^0.17.1",

@@ -1,13 +1,4 @@
-import { runApp, AppSimple } from 'olmo/start-app';
-import {init, update, view} from './counter-pair';
+import { runApp } from 'olmo/start-app';
+import App from './app';
 
-const app = AppSimple({
-  init: init(),
-  update: update,
-  view: view
-});
-
-runApp(
-  app,
-  document.getElementById('root')
-);
+runApp(App());

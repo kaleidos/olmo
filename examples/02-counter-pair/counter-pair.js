@@ -1,9 +1,11 @@
-import { html } from 'olmo/jsx';
-import { onEvent } from 'olmo/html-events';
+import Events from 'olmo/html-events';
+import ActionType from 'olmo/actions';
 import { forwardTo } from 'olmo/signal';
-import Type from 'olmo/actions';
+
+import { html } from 'snabbdom-jsx';
 
 import Counter from './counter';
+
 
 // model
 export function init(topInitialValue=0, bottomInitialValue=0) {
@@ -14,43 +16,42 @@ export function init(topInitialValue=0, bottomInitialValue=0) {
 }
 
 // actions
-export const Action = Type({
-  Top: [Counter.Action],
-  Bottom: [Counter.Action],
+export const Action = ActionType({
+  Top: ['counterAction'],
+  Bottom: ['counterAction'],
   Reset: []
 });
 
 // update
-export function update(action, model) {
-  return Action.case({
+export const update = Action.case('CounterPair', {
 
-    Top: (counterAction) => init(
-      Counter.update(counterAction, model.top), // update the top counter
-      model.bottom                              // keep bottom counter as is
-    ),
+  Top: (action, model) => init(
+    Counter.update(action.counterAction, model.top),
+    model.bottom
+  ),
 
-    Bottom: (counterAction) => init(
-      model.top,                                 // keep top counter as is
-      Counter.update(counterAction, model.bottom)// update bottom counter
-    ),
+  Bottom: (action, model) => init(
+    model.top,
+    Counter.update(action.counterAction, model.bottom)
+  ),
 
-    Reset: () => init()                          // reset both counters
-  }, action);
-}
+  Reset: () => init()
 
-export function view({address, model}) {
+});
+
+
+export function view(address, model) {
   const addressForTopCounter = forwardTo(address, Action.Top);
   const addressForBottomCounter = forwardTo(address, Action.Bottom);
 
   return (
     <div>
-      Top counter:
-      <Counter address={addressForTopCounter} model={model.top}/>
+      Top counter: {Counter.view(addressForTopCounter, model.top)}
+      Bottom counter: {Counter.view(addressForBottomCounter, model.bottom)}
 
-      Bottom counter:
-      <Counter address={addressForBottomCounter} model={model.bottom}/>
-
-      <button on-click={onEvent(address, Action.Reset)}>Reset counters</button>
+      <button on-click={Events.message(address, Action.Reset())}>Reset counters</button>
     </div>
   );
 }
+
+export default {init, view, update};
