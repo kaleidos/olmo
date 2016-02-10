@@ -17,6 +17,7 @@ Run any example with `npm run ex<number of the example>`, eg: `npm run ex1`
 2. [Counter pair](https://github.com/kaleidos/olmo/blob/master/examples/02-counter-pair) / [demo](http://kaleidos.github.io/olmo/examples/02-counter-pair/)
 3. [List of counters](https://github.com/kaleidos/olmo/blob/master/examples/03-list-of-counters) / [demo](http://kaleidos.github.io/olmo/examples/03-list-of-counters/)
 4. [Fancier list of counters](https://github.com/kaleidos/olmo/blob/master/examples/04-list-of-counters) / [demo](http://kaleidos.github.io/olmo/examples/04-list-of-counters/)
+5. [Random Gif Viewer](https://github.com/kaleidos/olmo/blob/master/examples/05-random-gif-viewer) / [demo](http://kaleidos.github.io/olmo/examples/05-random-gif-viewer/)
 
 ## Testing ##
 
