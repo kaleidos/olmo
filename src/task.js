@@ -1,6 +1,7 @@
 import Rx from 'rx';
 
 export const empty = Rx.Observable.empty;
+export const create = Rx.Observable.create;
 
 export function of(f) {
   return Rx.Observable.create(observer => {
@@ -15,5 +16,6 @@ export function of(f) {
 
 export default {
   empty,
-  of
+  of,
+  create
 };

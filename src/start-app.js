@@ -31,7 +31,6 @@ export function App(config) {
   const singleton = (action) => [action];
   const singletonMap = (signal) => signal.map(singleton);
   const address = Signal.forwardTo(inbox.address, singleton);
-  const modelWithEffect = config.init;
 
   function updateStep([oldModel, accumulatedEffects], action) {
     const [newModel, additionalEffects] = config.update(action, oldModel);
@@ -49,17 +48,23 @@ export function App(config) {
   const listInputs = R.prepend(inbox.signal, R.map(singletonMap, config.inputs));
   const inputs = Rx.Observable.merge(...listInputs);
   const effectsAndModel = inputs
-          .scan(R.flip(update), config.init)
-          .shareReplay();
-
-  const model = effectsAndModel.map(R.nth(0));
-
-  const html = effectsAndModel
-          .map(([model]) => config.view(address, model))
-          .debounce(1, Rx.Scheduler.RequestAnimationFrame)
+          .startWith(config.init)
+          .scan(R.flip(update))
   ;
 
-  const tasks = effectsAndModel.flatMap(([_, effect]) => Effects.toTask(address, effect));
+  const model = effectsAndModel
+          .map(R.nth(0))
+          .shareReplay();
+
+  const html = model
+          .map(m => config.view(address, m))
+          .debounce(1, Rx.Scheduler.RequestAnimationFrame)
+          .shareReplay()
+  ;
+
+  const tasks = effectsAndModel
+          .flatMap(([_, effect]) => Effects.toTask(address, effect))
+  ;
 
   return {
     model,
