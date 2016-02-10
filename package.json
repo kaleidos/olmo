@@ -12,6 +12,8 @@
     "ex3:build": "webpack ./examples/03-list-of-counters/index.js && cp bundle.js index.html ./examples/03-list-of-counters",
     "ex4": "webpack-dev-server --inline --entry ./examples/04-list-of-counters/index.js",
     "ex4:build": "webpack ./examples/04-list-of-counters/index.js && cp bundle.js index.html ./examples/04-list-of-counters",
+    "ex5": "webpack-dev-server --inline --entry ./examples/05-random-gif-viewer/index.js",
+    "ex5:build": "webpack ./examples/05-random-gif-viewer/index.js && cp bundle.js index.html ./examples/05-random-gif-viewer && cp -r assets ./examples/05-random-gif-viewer",
     "test": "babel-tape-runner test/**/*.js | faucet",
     "test:watch": "watch 'npm test' src/ test/ -d"
   },
