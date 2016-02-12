@@ -10,7 +10,7 @@ export function ActionType(spec) {
 function buildActionConstructor([actionName, actionFields]) {
   function actionGuard(name, handlers) {
     if (typeof handlers === 'undefined') {
-      throw new Error(`'Action.case' second param 'handlers' cannot be undefined.`)
+      throw new Error(`'Action.case' second param 'handlers' cannot be undefined in '${name}'.`);
     }
     return function update(action, model) {
       let handler;
